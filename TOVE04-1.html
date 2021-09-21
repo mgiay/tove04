@@ -1,0 +1,154 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" ng-app="MyApp" ng-cloak>
+<!-- ng-controller="MyController" ng-init="generateTable()"-->
+<!--====================HEADER:BEGIN====================-->
+<head>
+    <title>TOVE04 APPLICATION</title>
+    <meta charset="utf-8">
+    <meta content="ID=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <link rel="icon" href="img/W3Schools_logo.svg.png" sizes="16x16 32x32" type="image/png">
+    <!--####################INCLUDE_CSS:BEGIN####################-->
+    <link href="libs/bootstrap-4.6.0-dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="libs/bootstrap-icons-1.5.0/bootstrap-icons.css" rel="stylesheet">
+    <link href="libs/TOVE04.css" rel="stylesheet" type="text/css">
+    <!--####################INCLUDE_CSS:END####################-->
+</head>
+<!--====================HEADER:END====================-->
+
+
+<!--====================BODY:BEGIN====================-->
+<body ng-controller="MainController as vm">
+<!--NAVIGATOR_BAR:BEGIN-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-envelope"></i>
+            <b>TOVE04 APPLICATION</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toogle Navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto">
+            </div>
+            <form class="form-inline my-2 my-lg-0">
+                <span class="text-white">{{ vm.userInfo.name }}({{ vm.userInfo.number }})</span>
+                <span class="text-white mx-2">|</span>
+                <a href="#" class="text-white">Unregister</a>
+            </form>
+        </div>
+    </div>
+</nav>
+<!--NAVIGATOR_BAR:END-->
+
+
+<!--====================CONTAINER:BEGIN====================-->
+<div class="container">
+    <div class="row my-3">
+        <!--SEARCH_FORM:BEGIN-->
+        <div class="col-6">
+            <div id="div_search" class="input-group" style="width:400px">
+                <input id="txtFilter" type="text" class="form-control" placeholder="Filter..." ng-model="vm.txtFilter"
+                       title="Search data what you want...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="button" id="btnCall" title="Call this PhoneNumber"
+                            ng-click="vm.btnCallClick(vm.txtFilter)">
+                        <i class="bi bi-telephone-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--SEARCH_FORM:END-->
+
+        <!--ADD_CONTACT:BEGIN-->
+        <div class="col-6 text-right">
+            <button class="btn btn-success" title="Add new contact..." ng-click="vm.showAddContact=true;">
+                <i class="bi bi-plus-circle"></i>
+                ADD CONTACT
+            </button>
+        </div>
+        <!--ADD_CONTACT:END-->
+    </div>
+
+    <!--====================TABLE:BEGIN====================-->
+    <div class="">
+        <!--class="table-responsive"-->
+        <!--<table class="table table-bordered border-primary" ng-show="isVisible">-->
+        <table class="table table-bordered border-primary">
+            <!--TABLE_HEADER:BEGIN-->
+            <thead>
+            <tr>
+                <th scope="col" class="text-center" width="50px">#</th>
+                <th scope="col" class="text-center">FirstName</th>
+                <th scope="col" class="text-center">LastName</th>
+                <th scope="col" class="text-center">Phone</th>
+                <th scope="col" class="text-center" width="130px">Action</th>
+            </tr>
+            </thead>
+            <!--TABLE_HEADER:END-->
+
+            <!--TABLE_DATA:BEGIN-->
+            <tbody>
+            <tr ng-repeat="customers in vm.customers| filter:vm.txtFilter" ng-mouseover="vm.changeActionStatus(true)"
+                ng-mouseleave="changeActionStatus(false)">
+                <td>{{ ($index+1) }}</td>
+                <td>{{customers.firstname}}</td>
+                <td>{{customers.lastname}}</td>
+                <td>{{customers.phone}}</td>
+                <!--<td>{{customers.Action}}</td>-->
+                <td class="py-2">
+                    <div ng-if="isShowActions_4_TableData">
+                        <button class="btn btn-sm btn-success" title="Call this PhoneNumber"><i
+                                class="bi bi-telephone-fill"> </i></button>
+                        <button class="btn btn-sm btn-info" title="Edit this PhoneNumber"><i
+                                class="bi bi-pencil-square"> </i></button>
+                        <button class="btn btn-sm btn-danger" title="Delete this PhoneNumber"
+                                ng-click="vm.doRemoveContact(staff)"><i class="bi bi-trash"> </i></button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <!--TABLE_DATA:END-->
+
+        </table>
+    </div>
+    <!--====================TABLE:END====================-->
+
+</div>
+<!--====================CONTAINER:END====================-->
+
+
+
+
+
+
+<!--====================MODAL:BEGIN====================-->
+<section ng-include="modals.html"></section>
+<!--====================MODAL:END  ====================-->
+
+<audio id="remoteAudio"></audio>
+<audio id="localAudio" muted></audio>
+
+<!--####################INCLUDE_JS:BEGIN####################-->
+<script src="libs/angular-1.8.2/angular.js"></script>
+<script src="libs/jquery-3.6.0.js"></script>
+<script src="libs/bootstrap-4.6.0-dist/js/bootstrap.js"></script>
+
+<script src="libs/lodash.js"></script>
+<script src="libs/sip-0.15.0.js"></script>
+<script src="libs/TOVE04.js"></script>
+
+<script type="text/javascript" src="libs/sip.service.js"></script>
+<script type="text/javascript" src="libs/main.controller.js"></script>
+<script type="text/javascript" src="libs/dialpad.controller.js"></script>
+<!--####################INCLUDE_JS:END####################-->
+
+
+</body>
+<!--====================BODY:END====================-->
+
+</html>

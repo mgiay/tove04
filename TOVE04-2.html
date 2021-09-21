@@ -1,0 +1,290 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en" ng-app="MyApp" ng-cloak>
+<!--====================HEADER:BEGIN====================-->
+<head>
+    <title>TOVE04 APPLICATION</title>
+    <meta charset="utf-8">
+    <meta content="ID=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <link rel="icon" href="img/W3Schools_logo.svg.png" sizes="16x16 32x32" type="image/png">
+    <!--####################INCLUDE_CSS:BEGIN####################-->
+    <link rel="stylesheet" href="libs/bootstrap-4.6.0-dist/css/bootstrap.css">
+    <link rel="stylesheet" href="libs/bootstrap-icons-1.5.0/bootstrap-icons.css">
+    <link rel="stylesheet" href="libs/TOVE04.css">
+    <!--####################INCLUDE_CSS:END####################-->
+</head>
+<!--====================HEADER:END====================-->
+
+
+<!--====================BODY:BEGIN====================-->
+<body ng-controller="MainController as vm">
+<!--NAVIGATOR_BAR:BEGIN-->
+<nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container">
+        <a class="navbar-brand" href="#">
+            <i class="bi bi-envelope"></i>
+            <b>TOVE04 APPLICATION</b>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toogle Navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="navbar-nav mr-auto"></div>
+
+            <form class="form-inline my-2 my-lg-0">
+                <span class="text-white">{{ vm.userInfo.name }}({{ vm.userInfo.number }})</span>
+                <span class="text-white mx-2">|</span>
+                <a href="#" class="text-white">Unregister</a>
+            </form>
+
+        </div>
+    </div>
+</nav>
+<!--NAVIGATOR_BAR:END-->
+
+
+<!--====================CONTAINER:BEGIN====================-->
+<div class="container">
+    <div class="row my-3">
+        <!--SEARCH_FORM:BEGIN-->
+        <div class="col-6">
+            <div id="div_search" class="input-group" style="width:400px">
+                <input id="txtFilter" type="text" class="form-control" placeholder="Filter..." ng-model="vm.txtFilter"
+                       title="Search data what you want...">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-info" type="button" id="btnCall" title="Call this PhoneNumber"
+                            ng-click="vm.btnCallClick(vm.txtFilter)">
+                        <i class="bi bi-telephone-fill"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!--SEARCH_FORM:END-->
+
+        <!--ADD_CONTACT:BEGIN-->
+        <div class="col-6 text-right">
+            <button class="btn btn-success" title="Add new contact..." ng-click="vm.showAddContact=true;">
+                <i class="bi bi-plus-circle"></i>
+                ADD CONTACT
+            </button>
+        </div>
+        <!--ADD_CONTACT:END-->
+    </div>
+
+    <!--====================TABLE:BEGIN====================-->
+    <div class="">
+        <!--class="table-responsive"-->
+        <!--<table class="table table-bordered border-primary" ng-show="isVisible">-->
+        <table class="table table-bordered border-primary">
+            <!--TABLE_HEADER:BEGIN-->
+            <thead>
+            <tr>
+                <th scope="col" class="text-center" width="50px">#</th>
+                <th scope="col" class="text-center">FirstName</th>
+                <th scope="col" class="text-center">LastName</th>
+                <th scope="col" class="text-center">Phone</th>
+                <th scope="col" class="text-center" width="130px">Action</th>
+            </tr>
+            </thead>
+            <!--TABLE_HEADER:END-->
+
+            <!--TABLE_DATA:BEGIN-->
+            <tbody>
+            <tr ng-repeat="staff in vm.Staff | filter:vm.txtFilter" ng-mouseover="staff.showAction=true"
+                ng-mouseleave="staff.showAction=false">
+                <td>{{ ($index+1) }}</td>
+                <td>{{staff.FirstName}}</td>
+                <td>{{staff.LastName}}</td>
+                <td>{{staff.Phone}}</td>
+                <!--<td>{{staff.Action}}</td>-->
+                <td class="py-2">
+                    <div ng-if="staff.showAction">
+                        <button class="btn btn-sm btn-success" title="Call this PhoneNumber" ng-click="vm.doCall(staff)"
+                                ng-show="vm.isRegistered"><i class="bi bi-telephone-fill"></i></button>
+                        <button class="btn btn-sm btn-info" title="Edit this PhoneNumber"
+                                ng-click="vm.showEditContactModal(staff)"><i class="bi bi-pencil-square"> </i></button>
+                        <button class="btn btn-sm btn-danger" title="Delete this PhoneNumber"
+                                ng-click="vm.doRemoveContact(staff)"><i class="bi bi-trash"> </i></button>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+            <!--TABLE_DATA:END-->
+
+        </table>
+    </div>
+    <!--====================TABLE:END====================-->
+
+</div>
+<!--====================CONTAINER:END====================-->
+
+
+
+
+
+
+<!--====================DIAL_PAD:BEGIN====================-->
+<div ng-controller="DialpadController as vm">
+    <div class="card dialpad-wrapper fixed-bottom shadow" ng-show="vm.dialpadStatus==1" ng-class="{ 'minimize': vm.isMinimized }">
+        <!--=====DialPad_Header:BEGIN=====-->
+        <div class="card-header bg-green-gradient text-white">
+            <div class="row">
+                <!--Part1: Human Icon-->
+                <div class="col-sm-10 font-weight-bold">
+                    <i class="bi bi-person-circle"></i>
+                    <span class="text-white mx-2">  {{vm.agentNumber}}</span>
+                </div>
+                <!--Part2: Dash Icon-->
+                <div class="col-sm-2">
+                    <a href="#" ng-click="vm.toggleDialpadWindow()" class="text-white"><i class="bi bi-dash-lg"></i></a>
+                </div>
+            </div>
+        </div>
+        <!--=====DialPad_Header:END=====-->
+
+
+        <!--=====DialPad_Body:BEGIN=====-->
+        <div class="card-body text-center pt-2">
+            <!--Part1: TextBox for Number-->
+            <div class="mb-3">
+                <input type="text" class="from-control text-center" ng-model="vm.dialNumber" ng-keypress="vm.validateInputKey($event)">
+                <a href="#" ng-click="vm.deleteLast()"> <i class="bi bi-backspace"></i></a>
+            </div>
+
+            <!--Part2: KeyPad: 1-2-3-4-5-6-7-8-9-*-0-#-->
+            <div class="d-flex mb-3" ng-repeat="keys in vm.padKeys">
+                <div class="key rounded-circle mx-3 pt-1 font-weight-bold" ng-repeat="key in keys" ng-click="vm.pressPadKey(key)">{{ key }}</div>
+            </div>
+
+            <!--Part3: Dial Button-->
+            <div class="mb-2 text-center">
+                <a href="#" class="key rounded-circle mx-3 pt-2 d-inline-block bg-success border-success" ng-click="vm.doCall(vm.dialNumber)">
+                    <i class="bi bi-telephone-fill text-white"></i>
+                </a>
+            </div>
+        </div>
+        <!--=====DialPad_Body:END=====-->
+    </div>
+
+
+
+    <!--=====DialPad_OnCall:BEGIN=====-->
+    <div class="card dialpad-wrapper fixed-bottom shadow" ng-show="vm.dialpadStatus==2" ng-class="{'minimize': vm.isMinimized}">
+        <div class="card-header bg-green-gradient text-white">
+            <div class="row">
+                <!--.-->
+                <div class="col-sm-10">
+                    <i class="bi bi-telephone"></i> {{ vm.remoteNumber }}
+                    <span class="mx-2">||</span>
+                    <span>{{ vm.timerString }}</span>
+                </div>
+                <!--.-->
+                <div class="col-sm-2">
+                    <a href="#" class="text-white" ng-click="vm.toogleDialpadWindow()">
+                        <i class="bi bi-dash-lg"></i>
+                    </a>
+                </div>
+                <!--.-->
+            </div>
+        </div>
+
+        <!--.-->
+
+    </div>
+    <!--=====DialPad_OnCall:END=====-->
+
+
+
+
+
+
+</div>
+<!--====================DIAL_PAD:END  ====================-->
+
+
+
+
+
+<!--<section ng-include="'modals.html'"></section>-->
+<!--&lt;!&ndash;====================MODAL:BEGIN====================&ndash;&gt;-->
+<!--<div class="modal" tabindex="-1" ng-class="{'d-block':showAddContact}">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            <form ng-init="c={}" ng-submit="doAddContact(c)">-->
+<!--                &lt;!&ndash;MODAL_HEADER:BEGIN&ndash;&gt;-->
+<!--                <div class="modal-header">-->
+<!--                    <h5 class="modal-title"> Add new contact ...</h5>-->
+<!--                    <button type="button" class="close" ng-click="showAddContact=false">-->
+<!--                        <span aria-hidden="true">&times;</span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;MODAL_HEADER:END&ndash;&gt;-->
+
+<!--                &lt;!&ndash;MODAL_BODY:BEGIN&ndash;&gt;-->
+<!--                <div class="modal-body">-->
+<!--                    <p>Input contact information</p>-->
+<!--                    &lt;!&ndash;FirstName&ndash;&gt;-->
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label">Firstname</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="text" class="form-control" ng-model="c.FirstName" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;LastName&ndash;&gt;-->
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label">Lastname</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="text" class="form-control" ng-model="c.LastName" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;Phone&ndash;&gt;-->
+<!--                    <div class="form-group row">-->
+<!--                        <label class="col-sm-2 col-form-label">Phone</label>-->
+<!--                        <div class="col-sm-10">-->
+<!--                            <input type="number" class="form-control" ng-model="c.Phone" required>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;MODAL_BODY:END&ndash;&gt;-->
+
+<!--                &lt;!&ndash;MODAL_FOOTER:BEGIN&ndash;&gt;-->
+<!--                <div class="modal-footer">-->
+<!--                    <button type="button" class="btn btn-secondary" ng-click="showAddContact=false">Close</button>-->
+<!--                    <button type="submit" class="btn btn-success"> Add</button>-->
+<!--                </div>-->
+<!--                &lt;!&ndash;MODAL_FOOTER:END&ndash;&gt;-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--&lt;!&ndash;====================MODAL:END====================&ndash;&gt;-->
+
+
+<audio id="remoteAudio"></audio>
+<audio id="localAudio" muted></audio>
+
+<!--####################INCLUDE_JS:BEGIN####################-->
+<script type="text/javascript" src="libs/jquery-3.6.0.js"></script>
+<script type="text/javascript" src="libs/bootstrap-4.6.0-dist/js/bootstrap.js"></script>
+
+<script type="text/javascript" src="libs/angular-1.8.2/angular.js"></script>
+<script type="text/javascript" src="libs/lodash.js"></script>
+<script type="text/javascript" src="libs/sip-0.15.11.js"></script>
+
+<script type="text/javascript" src="libs/TOVE04.js"></script>
+<script type="text/javascript" src="libs/main.controller.js"></script>
+<script type="text/javascript" src="libs/dialpad.controller.js"></script>
+
+<script type="text/javascript" src="libs/sip.service.js"></script>
+
+<!--####################INCLUDE_JS:END####################-->
+
+
+</body>
+<!--====================BODY:END====================-->
+
+
+</html>
